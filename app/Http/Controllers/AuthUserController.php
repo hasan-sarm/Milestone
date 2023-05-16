@@ -23,12 +23,11 @@ class AuthUserController extends Controller
         $validator =Validator::make($request->all(),[
             'f_name'=>'string|required',
             's_name'=>'string|required',
-            'phone_number'=>['required','regex:/^(?:\+88|09)?(?:\d{10}|\d{13})$/'],
+            'phone_number'=>['required','regex:/^(?:\+88|09)?(?:\d{10}|\d{13})$/','unique:users'],
             'email'=>'string|email|unique:users',
             'password'=>'required|min:8',
             'gender'=>'string',
             'birthday'=>'required|date_format:d-m-Y|before:now',
-            'user_name'=>'unique:users|required',
         ]);
         if ($validator->fails())
         {
@@ -57,7 +56,7 @@ class AuthUserController extends Controller
      */
     public function login()
     {
-        $credentials = request(['user_name', 'password']);
+        $credentials = request(['phone_number', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized',

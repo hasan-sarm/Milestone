@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminActionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthUserController;
@@ -31,6 +32,13 @@ Route::group([
 
 });
 
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+    Route::post('newpost',[AdminActionController::class,'newPost']);
+});
 
 Route::group([
 
